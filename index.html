@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Templete Literals - Expresiones</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div id="container"></div>
+
+  <script>
+
+    function component(strings, ...dynamicValues) {
+      return function (props) {
+        let newContent = strings.slice()
+        console.log(newContent)
+        dynamicValues.forEach((values, index) =>
+          newContent[index] += props[values]
+        )
+        return newContent.join('')
+      }
+    }
+    const styled = {}
+    const Tag = "div"
+
+    const Style = `
+      color: green;
+      text-shadow: 1px 1px rgba(0, 0, 0, 5);
+      font-size: 25px;
+    `
+    const props = {
+      message: ' No Te Rindas ',
+    }
+
+    const modifStyle =
+      function (styles) {
+        return function (content) {
+          return `
+          <${Tag} style="${styles}">
+            ${content}
+          <${Tag}
+        `
+        }
+      }
+
+    styled[Tag] = modifStyle
+
+    const TitleStyled = styled[Tag](Style)
+
+    const Title = component`-----${'message'}-----`(props)
+
+    function render(component, container) {
+      container.innerHTML = component
+    }
+
+    render(TitleStyled(Title), window.container)
+
+  </script>
+
+
+</body>
+
+</html>
